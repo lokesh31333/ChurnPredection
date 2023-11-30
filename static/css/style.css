@@ -1,0 +1,39 @@
+
+body {
+  background-color: #000000;
+  font-family: Arial, sans-serif;
+  color: white;
+  text-align: center;
+}
+h1, h4 {
+  color: #ecf0f1;
+}
+form {
+  margin: auto;
+  width: 60%;
+  padding: 10px;
+}
+.form-input {
+  width: 100%;
+  padding: 10px;
+  margin-bottom: 10px;
+  border-radius: 5px;
+  border: none;
+}
+.form-input:focus {
+  outline: none;
+  border: 2px solid #3498db;
+}
+.form-submit {
+  width: 100%;
+  padding: 10px;
+  border-radius: 5px;
+  border: none;
+  color: white;
+  background-color: #3498db;
+  font-size: 18px;
+  cursor: pointer;
+}
+.form-submit:hover {
+  background-color: #2980b9;
+}

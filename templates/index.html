@@ -1,0 +1,217 @@
+<!DOCTYPE html>
+<html>
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Customer Churn Prediction</title>
+  <!-- Include Bootstrap CSS -->
+  <link href="https://stackpath.bootstrapcdn.com/bootstrap/4.3.1/css/bootstrap.min.css" rel="stylesheet">
+  <link rel="stylesheet" href="../static/css/style.css">
+  <link rel="stylesheet" href="../static/css/chat-style.css">
+  <!-- Include Bootstrap Optional JavaScript -->
+  <script src="https://code.jquery.com/jquery-3.3.1.slim.min.js"></script>
+  <script src="https://cdnjs.cloudflare.com/ajax/libs/popper.js/1.14.7/umd/popper.min.js"></script>
+  <script src="https://stackpath.bootstrapcdn.com/bootstrap/4.3.1/js/bootstrap.min.js"></script>
+  <style>
+    #chat-popup {
+      display: none;
+      position: fixed;
+      bottom: 0;
+      right: 0;
+      width: 300px;
+      z-index: 1000;
+    }
+    #chat-icon {
+      position: fixed;
+      bottom: 20px;
+      right: 20px;
+      z-index: 1010;
+      cursor: pointer;
+    }
+  </style>
+
+</head>
+
+<body class="bg-blue text-white">
+  <div class="container mt-5">
+    <div class="text-center mb-4">
+      <h1>Customer Churn Prediction</h1>
+      <h4>CMPE 280 Team 16</h4>
+    </div>
+
+     <!-- Main Input For Receiving Query to our ML -->
+    <form action="{{ url_for('predict')}}"method="post">
+
+      <div class="form-row text-center mb-3">
+        <div class="col-12">
+            <div class="form-check form-check-inline">
+                <input type="checkbox" id="SeniorCitizen" name="SeniorCitizen" value="1" class="form-check-input">
+                <label for="SeniorCitizen" class="form-check-label">Senior Citizen</label>
+            </div>
+            <div class="form-check form-check-inline">
+                <input type="checkbox" id="Partner" name="Partner" value="1" class="form-check-input">
+                <label for="Partner" class="form-check-label">Has a partner</label>
+            </div>
+            <div class="form-check form-check-inline">
+                <input type="checkbox" id="Dependents" name="Dependents" value="1" class="form-check-input">
+                <label for="Dependents" class="form-check-label">Has dependents</label>
+            </div>
+            <div class="form-check form-check-inline">
+                <input type="checkbox" id="PaperlessBilling" name="PaperlessBilling" value="1" class="form-check-input">
+                <label for="PaperlessBilling" class="form-check-label">Paperless Billing</label>
+            </div>
+            <div class="form-check form-check-inline">
+                <input type="checkbox" id="PhoneService" name="PhoneService" value="1" class="form-check-input">
+                <label for="PhoneService" class="form-check-label">Phone Service</label>
+            </div>
+            <div class="form-check form-check-inline">
+                <input type="checkbox" id="MultipleLines" name="MultipleLines" value="1" class="form-check-input">
+                <label for="MultipleLines" class="form-check-label">Multiple Lines</label>
+            </div>
+        </div>
+    </div>
+
+    <!-- More Checkboxes Row -->
+    <div class="form-row text-center mb-3">
+        <div class="col-12">
+            <div class="form-check form-check-inline">
+                <input type="checkbox" id="OnlineSecurity" name="OnlineSecurity" value="1" class="form-check-input">
+                <label for="OnlineSecurity" class="form-check-label">Online Security</label>
+            </div>
+            <div class="form-check form-check-inline">
+                <input type="checkbox" id="OnlineBackup" name="OnlineBackup" value="1" class="form-check-input">
+                <label for="OnlineBackup" class="form-check-label">Online Backup</label>
+            </div>
+            <div class="form-check form-check-inline">
+                <input type="checkbox" id="DeviceProtection" name="DeviceProtection" value="1" class="form-check-input">
+                <label for="DeviceProtection" class="form-check-label">Device Protection</label>
+            </div>
+            <div class="form-check form-check-inline">
+                <input type="checkbox" id="TechSupport" name="TechSupport" value="1" class="form-check-input">
+                <label for="TechSupport" class="form-check-label">Tech Support</label>
+            </div>
+            <div class="form-check form-check-inline">
+                <input type="checkbox" id="StreamingTV" name="StreamingTV" value="1" class="form-check-input">
+                <label for="StreamingTV" class="form-check-label">Streaming TV</label>
+            </div>
+            <div class="form-check form-check-inline">
+                <input type="checkbox" id="StreamingMovies" name="StreamingMovies" value="1" class="form-check-input">
+                <label for="StreamingMovies" class="form-check-label">Streaming Movies</label>
+            </div>
+        </div>
+    </div>
+
+        <!-- Form Selects -->
+        <div class="form-row mt-3">
+          <!-- Add your select dropdowns here, using 'col' classes to control their widths on different screens -->
+          <div class="col-md-3 mb-3">
+              <label for="gender">Gender:</label>
+              <select id="gender" name="gender" class="form-control">
+                  <option value="0">Male</option>
+                  <option value="1">Female</option>
+              </select>
+          </div>
+          <div class="col-md-3 mb-3">
+              <label for="InternetService">Internet:</label>
+              <select id="InternetService" name="InternetService" class="form-control">
+                  <option value="0">No</option>
+                  <option value="1">DSL</option>
+                  <option value="2">Fiber optic</option>
+              </select>
+          </div>
+          <div class="col-md-3 mb-3">
+              <label for="Contract">Contract:</label>
+              <select id="Contract" name="Contract" class="form-control">
+                  <option value="0">Month-to-Month</option>
+                  <option value="1">One-Year</option>
+                  <option value="2">Two-Year</option>
+              </select>
+          </div>
+          <div class="col-md-3 mb-3">
+              <label for="PaymentMethod">Payment:</label>
+              <select id="PaymentMethod" name="PaymentMethod" class="form-control">
+                  <option value="0">Automatic: Bank Transfer</option>
+                  <option value="1">Automatic: Credit Card</option>
+                  <option value="2">Electronic Check</option>
+                  <option value="3">Mailed Check</option>
+              </select>
+          </div>
+      </div>
+
+      <!-- Form Inputs for Monthly Charges and Tenure -->
+      <div class="form-row">
+          <div class="col-md-6 mb-3">
+              <input type="number" min="0" name="MonthlyCharges" placeholder="Monthly Charges" class="form-control" required="required" />
+          </div>
+          <div class="col-md-6 mb-3">
+              <input type="number" min="0" name="Tenure" placeholder="Tenure in Months" class="form-control" required="required" />
+          </div>
+      </div>
+
+<div class="text-center">
+  <button type="submit" class="btn btn-primary">Predict</button>
+</div>
+</form>
+<br>
+   <center>
+
+   {{ prediction_text }}
+
+
+  <br>
+  <br>
+  <img src="data:image/png;base64,{{url_3}}" alt="Submit Form" height="180" width="233" onerror="this.style.display='none'"/>
+  <img src="data:image/png;base64,{{url_1}}" alt="Submit Form" height="180" width="233" onerror="this.style.display='none'"/>
+  <img src="data:image/png;base64,{{url_4}}" alt="Submit Form" height="180" width="233" onerror="this.style.display='none'"/>
+  <br>
+  <br>
+  <img src="data:image/png;base64,{{url_2}}" alt="Submit Form" height="150" width="711" onerror="this.style.display='none'"/>
+  </center>
+ </div>
+ <div id="chat-icon">
+  <img src="../static/images/chat-icon.png" alt="Chat" width="50" height="50" />
+</div>
+
+<!-- Chat Popup -->
+<div id="chat-popup" class="card text-white bg-dark">
+  <div class="card-header bg-secondary">
+    Chat with us!
+    <button type="button" class="close text-white" aria-label="Close" onclick="toggleChat()">
+      <span aria-hidden="true">&times;</span>
+    </button>
+  </div>
+  <div class="card-body">
+    <div id="chat-messages" class="mb-2 p-2 bg-dark" style="height: 325px; overflow-y: auto; text-align: left;"></div>
+    <input type="text" id="chat-input" class="form-control bg-secondary text-white" placeholder="Hello There">
+    <button id="send-button" onclick="sendMessage()" class="btn btn-primary btn-block mt-2">Send</button>
+  </div>
+</div>
+
+<!-- Your chat.js script -->
+<script src="../static/js/chat.js"></script>
+<script>
+
+  
+  // Function to toggle the chat popup
+  function toggleChat() {
+    var chatPopup = document.getElementById('chat-popup');
+    var chatIcon = document.getElementById('chat-icon');
+    if (chatPopup.style.display === 'none') {
+      chatPopup.style.display = 'block';
+      chatIcon.style.display = 'none';
+    } else {
+      chatPopup.style.display = 'none';
+      chatIcon.style.display = 'block';
+    }
+  }
+
+  // Attach toggleChat function to chat icon click event
+  document.getElementById('chat-icon').addEventListener('click', function() {
+    toggleChat();
+});
+
+</script>
+
+
+</body>
+</html>

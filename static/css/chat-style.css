@@ -1,0 +1,65 @@
+#chat-popup {
+    display: none;
+    position: fixed;
+    bottom: 0;
+    right: 0;
+    width: 300px;
+    z-index: 1000;
+}
+
+#chat-popup .card-header {
+    background-color: #000000; /* even darker color for the header */
+    border-bottom: 1px solid #000000; /* subtle border for the header */
+}
+
+#chat-messages {
+    height: 200px;
+    overflow-y: auto;
+    margin-bottom: 10px;
+    padding: 5px;
+    background: #555; /* slightly lighter dark for messages area */
+    border: none;
+    color: white; /* ensure text is white */
+}
+
+#chat-input {
+    width: calc(100%);
+    padding: 5px;
+    margin-bottom: 10px; /* Add margin if needed */
+    border-radius: 5px;
+    border: 1px solid #666; /* subtle border for the input */
+    background: #222; /* dark background for the input */
+    color: white; /* light color text for the input */
+}
+
+/* Styles for the send button */
+#chat-popup button {
+    width: 60px;
+    background-color: #0069d9; /* bootstrap success color, change if needed */
+    color: white;
+    border: none;
+    padding: 5px;
+    border-radius: 5px;
+    margin-left: 0px; /* Align with the input field */
+}
+
+/* When button is hovered */
+#chat-popup button:hover {
+    background-color: #02203c; /* a bit darker on hover */
+}
+
+/* Close button custom style */
+#chat-popup .close {
+
+    color: black;
+    opacity: 1;
+}
+
+/* Style for the chat icon */
+#chat-icon {
+    position: fixed;
+    bottom: 20px;
+    right: 20px;
+    z-index: 1010;
+    cursor: pointer;
+}
